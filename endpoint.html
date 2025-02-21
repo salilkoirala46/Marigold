@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        display: none;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="spinner"></div>
+
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Capacity</th>
+          <th>Color</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      $.get("https://api.restful-api.dev/objects", function (response) {
+        if (response && response.length > 0) {
+          $(".spinner").fadeOut(500);
+          $(".result-table").fadeIn(500);
+
+          const tbody = $(".result-table tbody");
+          response.forEach((item) => {
+            tbody.append(
+              `<tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${
+                  item.data && item.data.capacity ? item.data.capacity : ""
+                }</td>
+                <td>${item.data && item.data.color ? item.data.color : ""}</td>
+              </tr>`
+            );
+          });
+        }
+      });
+
+      $(".spinner").show();
+    </script>
+  </body>
+</html>
